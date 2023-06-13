@@ -2,6 +2,14 @@
 
 @section('content')
     <div>
+
+        {{-- stampo l'alert solo se in sessione è presente la variabile "deleted"  --}}
+        @if (session('deleted'))
+            <div class="alert alert-success" role="alert">
+                {{ session('deleted') }}
+            </div>
+        @endif
+
         <h1 class="my-3">Elenco prodotti</h1>
         <table class="table">
             <thead>
@@ -19,8 +27,19 @@
                         <td>{{ $pasta->titolo }}</td>
                         <td>{{ $pasta->tipo }}</td>
                         <td>
-                            <a href="{{ route('pastas.show', $pasta) }}" class="btn btn-success">VAI</a>
-                            <a href="#" class="btn btn-primary">MODIFICA</a>
+                            <a href="{{ route('pastas.show', $pasta) }}" title="VAI" class="btn btn-success"><i class="fa-solid fa-eye"></i></a>
+                            <a href="{{ route('pastas.edit', $pasta) }}" class="btn btn-primary" title="Modifica"><i class="fa-solid fa-pencil"></i></a>
+
+                            <form
+                              class="d-inline"
+                              action="{{ route('pastas.destroy', $pasta) }}"
+                              method="POST"
+                              onsubmit="return confirm('Confermi l\'eliminazione del prodotto:  {{ $pasta->titolo }} ?')"
+                            >
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" title="Elimina"><i class="fa-solid fa-eraser"></i></button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

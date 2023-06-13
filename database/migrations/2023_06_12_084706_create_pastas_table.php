@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('tipo',20);
             $table->string('cottura',20);
             $table->string('peso',20);
-            $table->text('descrizione');
+            $table->text('descrizione')->nullable();
             $table->timestamps();
         });
     }
